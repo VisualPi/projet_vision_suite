@@ -1,0 +1,39 @@
+cmake_minimum_required (VERSION 2.8.4)
+
+project (PlateRecognizer CXX)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+set(FIRST_RUN OFF CACHE BOOL "First Run of CMake")
+set(OPENCV_PATH "opencv/build" CACHE STRING "Path to opencv/build path")
+set(MACHIN_PATH "x64 dll dir" CACHE STRING "Path to x64 dir where lib and dll for machine learning are")
+
+if (CMAKE_GENERATOR STREQUAL "Visual Studio 14 2015 Win64")
+set(OPENCVBINDIR "${OPENCV_PATH}/x64/vc14/bin")
+set(OPENCVLIBDIR "${OPENCV_PATH}/x64/vc14/lib")
+elseif(CMAKE_GENERATOR STREQUAL "Visual Studio 12 2013 Win64")
+set(OPENCVBINDIR "${OPENCV_PATH}/x64/vc12/bin")
+set(OPENCVLIBDIR "${OPENCV_PATH}/x64/vc12/lib")
+endif()
+set(OPENCVINCLUDEDIR "${OPENCV_PATH}/include")
+set(MACHININCLUDEDIR "${MACHIN_PATH}/include")
+
+set(PLATFORM "x64")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GS /W3 /Zi /Zc:wchar_t /fp:precise /errorReport:prompt /WX- /Zc:forScope /Gd /EHsc /nologo")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DWIN32 /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Gm /Od /RTC1 /MDd")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /D_DEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /GL /Gy /Gm- /O2 /Oi /MD")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /DNDEBUG")
+
+if(FIRST_RUN)
+	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+	file(MAKE_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+
+	file(COPY ${OPENCVBINDIR}/opencv_world310.dll DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+	file(COPY ${OPENCVBINDIR}/opencv_world310d.dll DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug)
+endif(FIRST_RUN)
+
+add_subdirectory(src)
