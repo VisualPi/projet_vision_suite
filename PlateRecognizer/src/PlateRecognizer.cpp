@@ -7,10 +7,10 @@ const bool showResult = true;//show the result in the Detection function (useful
 const std::string window_name = "Plate Recognizer";
 const std::vector<char> chars{ '0','1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-PlateRecognizer::PlateRecognizer() : images_( std::vector<Image>() ), knn_( cv::ml::KNearest::create() )
+PlateRecognizer::PlateRecognizer() : images_( std::vector<Image>() )/*, knn_( cv::ml::KNearest::create() )*/
 {
 }
-PlateRecognizer::PlateRecognizer( const std::string& path ) : images_( std::vector<Image>() ), knn_( cv::ml::KNearest::create() )
+PlateRecognizer::PlateRecognizer( const std::string& path ) : images_( std::vector<Image>() ) /*,knn_( cv::ml::KNearest::create())*/
 {
 	std::string cmd = "dir " + path + " /b > c:\\temp\\foo.txt"; //commande windows pour mettre dans un fichier toutes les photos d'un dossier
 	system( cmd.c_str() );
@@ -27,7 +27,7 @@ PlateRecognizer::PlateRecognizer( const std::string& path ) : images_( std::vect
 	}
 
 }
-PlateRecognizer::PlateRecognizer( const PlateRecognizer& plateRecognizer ) : images_( plateRecognizer.images_ ), knn_( plateRecognizer.knn_ )
+PlateRecognizer::PlateRecognizer( const PlateRecognizer& plateRecognizer ) : images_( plateRecognizer.images_ ) /*,knn_( plateRecognizer.knn_ )*/
 {}
 
 PlateRecognizer::~PlateRecognizer()
@@ -37,7 +37,7 @@ PlateRecognizer::~PlateRecognizer()
 
 void PlateRecognizer::Process()
 {
-	knn_ = cv::Algorithm::load < cv::ml::KNearest>( "C:\\Users\\Jonathan\\Documents\\ESGI\\5A\\machine_learning\\datasets\\savedDatas"); //chargement des données entrainées
+	//knn_ = cv::Algorithm::load < cv::ml::KNearest>( "C:\\Users\\Jonathan\\Documents\\ESGI\\5A\\machine_learning\\datasets\\savedDatas"); //chargement des données entrainées
 	for ( std::vector<Image>::iterator it = images_.begin(); it != images_.end(); ++it )//pour chacune des images du dossier
 	{
 		cv::Mat image1 = ( *it ).GetImage();//on stock dans une variable temp l'image en cours
@@ -76,10 +76,10 @@ void PlateRecognizer::Process()
 					cv::Mat matResults( 1, 20 * 20, CV_32F );
 					for ( int i = 0; i < 20 * 20; ++i )
 						matResults.at<float>( cv::Point( i, 0 ) ) = ( (int) ( resized.data[i] ) > tolerence ) ? 0 : 1; //on change la valeur des pixels en 0 ou 1 (comme pour le dataset)
-					int f = knn_->predict( matResults );//resultat du predict avec le caractere courant
-					std::cout << "result: " << chars[f] << std::endl;//affichage du caractere trouvé par le KNN
-					if (f != -1)//-1 pour le bruit, pas encore geré
-						letters.push_back( chars[f] );//remplissage de la chaine de caractere correspondante a la plaque
+					//int f = knn_->predict( matResults );//resultat du predict avec le caractere courant
+					//std::cout << "result: " << chars[f] << std::endl;//affichage du caractere trouvé par le KNN
+					//if (f != -1)//-1 pour le bruit, pas encore geré
+					//	letters.push_back( chars[f] );//remplissage de la chaine de caractere correspondante a la plaque
 					if ( showResult )
 					{
 						cv::imshow( "Chars", resized );

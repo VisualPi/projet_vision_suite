@@ -12,8 +12,8 @@ set(SOURCES_FILES	./main.cpp
 add_executable(${PROJECT_NAME} ${SOURCES_FILES})
 
 target_link_libraries(${PROJECT_NAME} 
-	debug 		${OPENCVLIBDIR}/opencv_world310d.lib
-	debug 		${MACHIN_PATH}/debug/DllForUnity.lib
-	optimized	${OPENCVLIBDIR}/opencv_world310.lib
-	optimized	${MACHIN_PATH}/release/DllForUnity.lib
+	debug 		${OPENCVLIBDIR}/opencv_world331d.lib
+	#debug 		${MACHIN_PATH}/debug/DllForUnity.lib
+	optimized	${OPENCVLIBDIR}/opencv_world331.lib
+	#optimized	${MACHIN_PATH}/release/DllForUnity.lib
 	)
