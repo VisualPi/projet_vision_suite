@@ -21,7 +21,7 @@ PlateRecognizer::PlateRecognizer( const std::string& path ) : images_( std::vect
 	{
 		while ( getline( ifs, line ) )
 		{
-			cv::Mat tmp = cv::imread( path + "\\" + line, CV_LOAD_IMAGE_COLOR ); //chargement de chaque photo
+			cv::Mat tmp = cv::imread( path + "\\" + line, cv::IMREAD_COLOR); //chargement de chaque photo
 			images_.push_back( tmp );//stylay (pas besoin d'appeler le contructeur : Image(tmp), il le fait implicitement)
 		}
 		ifs.close();
@@ -225,7 +225,7 @@ cv::Mat PlateRecognizer::preprocessChar( const cv::Mat& in )
 	transformMat.at<float>( 1, 2 ) = m / 2 - h / 2;
 
 	cv::Mat warpImage( m, m, in.type() );
-	warpAffine( in, warpImage, transformMat, warpImage.size(), CV_INTER_LINEAR, IPL_BORDER_CONSTANT, cv::Scalar( 0 ) );
+	warpAffine( in, warpImage, transformMat, warpImage.size(), cv::INTER_LINEAR, cv::BORDER_CONSTANT, cv::Scalar( 0 ) );
 
 	cv::Mat out;
 	resize( warpImage, out, cv::Size( 20, 20 ) );
@@ -291,8 +291,8 @@ void PlateRecognizer::CharactersDetection( Plate& plate )
 	std::vector< std::vector< cv::Point> > contours;
 	findContours( img_contours,
 				  contours, // a vector of contours
-				  CV_RETR_EXTERNAL, // retrieve the external contours
-				  CV_CHAIN_APPROX_NONE ); // all pixels of each contours
+				  cv::RETR_EXTERNAL, // retrieve the external contours
+				  cv::CHAIN_APPROX_NONE ); // all pixels of each contours
 
 	if ( showSteps )
 	{
@@ -303,7 +303,7 @@ void PlateRecognizer::CharactersDetection( Plate& plate )
 	// Draw blue contours on a white image
 	cv::Mat result;
 	img_threshold.copyTo( result );
-	cvtColor( result, result, CV_GRAY2RGB );
+	cvtColor( result, result, cv::COLOR_GRAY2RGB);
 	cv::drawContours( result, contours,
 					  -1, // draw all contours
 					  cv::Scalar( 255, 0, 0 ), // in blue

@@ -1,7 +1,8 @@
 project (PlateRecognizer CXX)
-include_directories(../include
-				    ../MNIST/include
-					${OPENCVINCLUDEDIR})
+
+include_directories(
+                 PUBLIC 
+                    ../include)
 					
 add_executable( ${PROJECT_NAME} 
 			./main.cpp
@@ -15,12 +16,11 @@ add_executable( ${PROJECT_NAME}
 			../include/Plate.h
 			../include/PlateRecognizer.h
 			../include/Util.hpp
-			#./NeuralNetwork.cpp
 			)
 
 target_link_libraries(${PROJECT_NAME}
 	debug		MNIST
 	optimized   MNIST
-	debug 		${OPENCVLIBDIR}/opencv_world310d.lib
-	optimized	${OPENCVLIBDIR}/opencv_world310.lib
+	debug 		${OPENCVLIBDIR}/opencv_world430d.lib
+	optimized	${OPENCVLIBDIR}/opencv_world430.lib
 	)
