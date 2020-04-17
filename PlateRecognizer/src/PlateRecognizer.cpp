@@ -1,4 +1,5 @@
 #include "PlateRecognizer.h"
+#include "MNIST.h"
 
 #define	MOY_MAX 26000
 #define	MOY_MIN 3000
@@ -12,9 +13,9 @@ PlateRecognizer::PlateRecognizer() : images_( std::vector<Image>() ), knn_( cv::
 }
 PlateRecognizer::PlateRecognizer( const std::string& path ) : images_( std::vector<Image>() ), knn_( cv::ml::KNearest::create() )
 {
-	std::string cmd = "dir " + path + " /b > c:\\temp\\foo.txt"; //commande windows pour mettre dans un fichier toutes les photos d'un dossier
+	std::string cmd = "dir " + path + " /b > D:\\temp\\foo.txt"; //commande windows pour mettre dans un fichier toutes les photos d'un dossier
 	system( cmd.c_str() );
-	std::ifstream ifs( "c:\\temp\\foo.txt", std::ios::in );//lecture du fichier rempli précédemment
+	std::ifstream ifs( "D:\\temp\\foo.txt", std::ios::in );//lecture du fichier rempli précédemment
 	std::string line( "" );
 	if ( ifs.is_open() )
 	{
@@ -37,6 +38,15 @@ PlateRecognizer::~PlateRecognizer()
 
 void PlateRecognizer::Process()
 {
+	MNIST mnist;
+	mnist.readDataset(
+		"D:\\projects\\MNIST_dataset\\emnist-byclass-test-images-idx3-ubyte",
+		"D:\\projects\\MNIST_dataset\\emnist-byclass-train-labels-idx1-ubyte",
+		814254, 28, 28);
+
+	mnist.train();
+
+
 	knn_ = cv::Algorithm::load < cv::ml::KNearest>( "C:\\Users\\Jonathan\\Documents\\ESGI\\5A\\machine_learning\\datasets\\savedDatas"); //chargement des données entrainées
 	for ( std::vector<Image>::iterator it = images_.begin(); it != images_.end(); ++it )//pour chacune des images du dossier
 	{

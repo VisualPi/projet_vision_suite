@@ -1,4 +1,4 @@
-#include <opencvinlcudes.h>
+#include <opencvincludes.h>
 #include "PlateRecognizer.h"
 
 std::string window_name = "Plate Recognizer";
@@ -38,12 +38,18 @@ int main( int argc, char** argv )
 		return 0;
 #endif
 
+		if (argv[1] == "")
+		{
+			std::cerr << "No input folder." << std::endl;
+			return -1;
+		}
+
 		/////////////////////////////////////////////////////
 		cv::namedWindow( window_name, CV_WINDOW_AUTOSIZE );
-		PlateRecognizer pr( "C:\\Users\\Jonathan\\Documents\\ESGI\\5A\\projet_vision_suite\\trunk\\images\\plates" );
+		PlateRecognizer pr(argv[1]);
 		pr.Process();
 	}
-	catch ( std::exception& e )
+	catch ( const std::exception& e )
 	{
 		std::cout << "STD Exception found : " << e.what() << std::endl;
 		return -1;

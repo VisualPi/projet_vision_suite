@@ -1,5 +1,5 @@
 #pragma once
-#include <opencvinlcudes.h>
+#include <opencvincludes.h>
 #include "Plate.h"
 class Image
 {
